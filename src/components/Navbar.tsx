@@ -123,7 +123,7 @@ export default function Navbar() {
             About
           </Link>
           
-          <Button 
+          {/* <Button 
             variant="ghost" 
             size="icon" 
             onClick={toggleTheme}
@@ -133,7 +133,7 @@ export default function Navbar() {
             )}
           >
             {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </Button>
+          </Button> */}
           
           <Button 
             className={cn(

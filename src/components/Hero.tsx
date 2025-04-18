@@ -48,9 +48,9 @@ export default function Hero() {
               <br />
               with AI-Powered Patent Intelligence
             </h1>
-            <p className="max-w-[700px] text-foreground-muted md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Unlock innovation insights, discover emerging trends, and generate novel patent ideas with our powerful AI platform.
-            </p>
+            <p className="max-w-[700px] mx-auto text-foreground-muted md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+  Unlock innovation insights, discover emerging trends, and generate novel patent ideas with our powerful AI platform.
+</p>
           </div>
           
           <div className="w-full max-w-md flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 animate-fade-in [animation-delay:400ms]">

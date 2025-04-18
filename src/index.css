@@ -6,14 +6,59 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dark mode (default) */
 @layer base {
-  body {
+  :root {
     @apply bg-background text-foreground antialiased;
-    background: linear-gradient(135deg, #0A192F 0%, #112240 100%);
   }
 
   * {
     @apply border-border;
+  }
+  
+  body {
+    background: linear-gradient(135deg, #0A192F 0%, #112240 100%);
+  }
+  
+  /* Basic theme classes that toggle with JS */
+  .dark-mode {
+    --background-color: #0A192F;
+    --text-color: #E6F1FF;
+    --primary-color: #64FFDA;
+    color-scheme: dark;
+  }
+  
+  .light-mode {
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #0066cc;
+    color-scheme: light;
+    
+    /* Override background for light mode */
+    & body {
+      background: linear-gradient(135deg, #f0f4f8 0%, #d7e3ec 100%);
+    }
+    
+    /* Light mode color overrides */
+    --background: 210 40% 96.1%;
+    --foreground: 222.2 84% 4.9%;
+    --primary: 217 91.2% 59.8%;
+    --primary-foreground: 0 0% 98%;
+    --accent: 213 68% 92%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --border: 214.3 31.8% 91.4%;
+    
+    & .text-foreground-muted {
+      color: #64748b;
+    }
+    
+    /* Card and glassmorphic styling for light mode */
+    & .glassmorphic {
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(209, 213, 219, 0.3);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
   }
 }
 
@@ -24,5 +69,21 @@
 
   .text-gradient {
     @apply bg-gradient-to-r from-primary via-accent-foreground to-primary bg-clip-text text-transparent;
+  }
+  
+  /* Animation classes */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease forwards;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

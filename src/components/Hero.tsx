@@ -32,9 +32,9 @@ const animatedCounter = (start = 0, end: number, duration = 2000, delay = 0) => 
 };
 
 export default function Hero() {
-  const patentsCount = animatedCounter(0, 721, 3000, 100);
-  const ideasCount = animatedCounter(0, 120, 3000, 800);
-  const papersCount = animatedCounter(0, 450, 3000, 500);
+  const patentsCount = animatedCounter(0, 0, 3000, 100);
+  const ideasCount = animatedCounter(0, 0, 3000, 800);
+  const papersCount = animatedCounter(0, 0, 3000, 500);
   
   return (
     <section className="relative pt-28 pb-20 md:pt-32 md:pb-24 bg-background">

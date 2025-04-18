@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Sparkles, Lightbulb, Download, ArrowRight, BarChart3, ShieldCheck, BrainCircuit,
   Zap, Lock, Copy, MessagesSquare, Send, CornerDownRight
@@ -32,13 +33,14 @@ const mockGeneratedIdeas = [
 ];
 
 export default function PatentGenerator() {
+  const [showChat, setShowChat] = useState(false);
   const [userInput, setUserInput] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedIdeas, setGeneratedIdeas] = useState<typeof mockGeneratedIdeas>([]);
   const [chat, setChat] = useState<{role: string, content: string}[]>([
     {role: 'system', content: 'Welcome to the Patent Idea Generator. Describe your research area or interests, and I will suggest novel patent ideas based on cutting-edge technologies and market gaps.'}
   ]);
-  
+
   const handleGenerate = () => {
     if (!userInput.trim()) return;
     
@@ -48,7 +50,7 @@ export default function PatentGenerator() {
     
     // Simulate AI response
     setTimeout(() => {
-      setChat([...chat, 
+      setChat(prevChat => [...prevChat, 
         {role: 'user', content: userInput},
         {role: 'assistant', content: 'Based on your interest in advanced computing paradigms, I\'ve generated some novel patent ideas that combine cutting-edge technologies with practical applications. These ideas address emerging market needs while building on recent research advances.'}
       ]);
@@ -56,25 +58,48 @@ export default function PatentGenerator() {
       setGeneratedIdeas(mockGeneratedIdeas);
     }, 2000);
   };
+
+  const handleTryExample = () => {
+    setShowChat(true);
+    setChat([
+      {role: 'system', content: 'Welcome to the Patent Idea Generator. I\'m here to help you explore innovative patent ideas. Let\'s start with an example in quantum computing and neural interfaces.'},
+      {role: 'assistant', content: 'Would you like to explore patent opportunities in quantum computing or neural interfaces? I can help you generate novel ideas in these cutting-edge fields.'}
+    ]);
+  };
   
+  if (!showChat) {
+    return (
+      <section id="generator" className="py-12 md:py-24 relative">
+        <div className="absolute inset-0 -z-10 gradient-bg opacity-40"></div>
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center text-center space-y-4 mb-10">
+            <Badge className="bg-primary/20 text-primary hover:bg-primary/30 px-4 py-1">
+              <Sparkles className="h-4 w-4 mr-2" />
+              AI-Powered
+            </Badge>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">Patent Idea Generator</h2>
+            <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              Generate novel patent ideas using our advanced AI that analyzes research gaps and technology trends
+            </p>
+            <Button 
+              className="mt-6 bg-primary hover:bg-primary/90"
+              onClick={handleTryExample}
+            >
+              <Sparkles className="h-4 w-4 mr-2" /> Try an Example
+            </Button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section id="generator" className="py-12 md:py-24 relative">
+    <section className="min-h-[calc(100vh-4rem)] flex flex-col relative">
       <div className="absolute inset-0 -z-10 gradient-bg opacity-40"></div>
       
-      <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center text-center space-y-4 mb-10">
-          <Badge className="bg-primary/20 text-primary hover:bg-primary/30 px-4 py-1">
-            <Sparkles className="h-4 w-4 mr-2" />
-            AI-Powered
-          </Badge>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">Patent Idea Generator</h2>
-          <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            Generate novel patent ideas using our advanced AI that analyzes research gaps and technology trends
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-          <div className="lg:col-span-2 glass-card flex flex-col">
+      <div className="container flex-1 py-8 px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full max-h-[calc(100vh-8rem)]">
+          <div className="lg:col-span-2 glass flex flex-col rounded-xl border border-white/10">
             <div className="p-4 border-b border-border">
               <h3 className="text-lg font-medium flex items-center">
                 <MessagesSquare className="h-5 w-5 mr-2 text-primary" />
@@ -82,44 +107,46 @@ export default function PatentGenerator() {
               </h3>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{maxHeight: '400px'}}>
-              {chat.map((message, index) => (
-                <div 
-                  key={index} 
-                  className={cn(
-                    "flex",
-                    message.role === 'user' ? "justify-end" : "justify-start",
-                    message.role === 'system' ? "justify-center" : ""
-                  )}
-                >
-                  {message.role === 'system' ? (
-                    <div className="glass px-4 py-2 rounded-lg max-w-[80%] text-sm text-center text-muted-foreground">
-                      {message.content}
-                    </div>
-                  ) : message.role === 'user' ? (
-                    <div className="bg-primary/20 text-foreground px-4 py-2 rounded-lg rounded-tr-none max-w-[80%] text-sm">
-                      {message.content}
-                    </div>
-                  ) : (
-                    <div className="glass px-4 py-2 rounded-lg rounded-tl-none max-w-[80%] text-sm">
-                      {message.content}
-                    </div>
-                  )}
-                </div>
-              ))}
-              
-              {isGenerating && (
-                <div className="flex justify-start">
-                  <div className="glass px-4 py-2 rounded-lg rounded-tl-none max-w-[80%]">
-                    <div className="flex items-center space-x-2">
-                      <div className="h-2 w-2 bg-primary rounded-full animate-pulse"></div>
-                      <div className="h-2 w-2 bg-primary rounded-full animate-pulse [animation-delay:300ms]"></div>
-                      <div className="h-2 w-2 bg-primary rounded-full animate-pulse [animation-delay:600ms]"></div>
+            <ScrollArea className="flex-1 p-4">
+              <div className="space-y-4">
+                {chat.map((message, index) => (
+                  <div 
+                    key={index} 
+                    className={cn(
+                      "flex",
+                      message.role === 'user' ? "justify-end" : "justify-start",
+                      message.role === 'system' ? "justify-center" : ""
+                    )}
+                  >
+                    {message.role === 'system' ? (
+                      <div className="glass px-4 py-2 rounded-lg max-w-[80%] text-sm text-center text-muted-foreground">
+                        {message.content}
+                      </div>
+                    ) : message.role === 'user' ? (
+                      <div className="bg-primary/20 text-foreground px-4 py-2 rounded-lg rounded-tr-none max-w-[80%] text-sm">
+                        {message.content}
+                      </div>
+                    ) : (
+                      <div className="glass px-4 py-2 rounded-lg rounded-tl-none max-w-[80%] text-sm">
+                        {message.content}
+                      </div>
+                    )}
+                  </div>
+                ))}
+                
+                {isGenerating && (
+                  <div className="flex justify-start">
+                    <div className="glass px-4 py-2 rounded-lg rounded-tl-none max-w-[80%]">
+                      <div className="flex items-center space-x-2">
+                        <div className="h-2 w-2 bg-primary rounded-full animate-pulse"></div>
+                        <div className="h-2 w-2 bg-primary rounded-full animate-pulse [animation-delay:300ms]"></div>
+                        <div className="h-2 w-2 bg-primary rounded-full animate-pulse [animation-delay:600ms]"></div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            </ScrollArea>
             
             <div className="p-4 border-t border-border">
               <div className="relative">
